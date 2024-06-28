@@ -15,7 +15,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins(new String[]{"https://add-blank-section.d3p9612nzxp7i3.amplifyapp.com"})
+                .allowedOrigins(new String[]{"https://add-blank-section-deployed.d3p9612nzxp7i3.amplifyapp.com"})
                 .allowedMethods(new String[]{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"})
                 .allowedHeaders(new String[]{"*"})
                 .allowCredentials(true)
