@@ -41,7 +41,8 @@ public class WebSecurityConfig {
 		}).sessionManagement((sessionManagement) -> {
 			sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		}).authorizeHttpRequests((authorize) -> {
-			((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)authorize.requestMatchers(new String[]{"/", "/auth/**", "/h2-console/**"})).permitAll().anyRequest()).authenticated();
+			((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)authorize
+							.requestMatchers(new String[]{"/", "/auth/**", "/h2-console/**", "/api/kogpt/generate"})).permitAll().anyRequest()).authenticated();
 		}).headers((headers) -> {
 			headers.frameOptions((frameOptions) -> {
 				frameOptions.sameOrigin();
