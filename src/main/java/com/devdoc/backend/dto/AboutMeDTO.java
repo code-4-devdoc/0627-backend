@@ -12,7 +12,8 @@ public class AboutMeDTO {
     private Integer id;
     private String photo;
     private String name;
-    private String jobTitle;
+    private String birthday;
+    private String github;
     private String email;
     private String phoneNumber;
     private String blog;

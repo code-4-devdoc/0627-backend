@@ -44,6 +44,18 @@ public class Resume {
     @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Project> projects;
 
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Activity> activities;
+
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Training> trainings;
+
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<AboutMe> aboutMes;
+
+    @OneToMany(mappedBy = "resume", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Education> educations;
+
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();

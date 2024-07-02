@@ -38,6 +38,18 @@ public class ResumeService {
     @Autowired
     private CertificateRepository certificateRepository;
 
+    @Autowired
+    private ActivityRepository activityRepository;
+
+    @Autowired
+    private TrainingRepository trainingRepository;
+
+    @Autowired
+    private AboutMeRepository aboutMeRepository;
+
+    @Autowired
+    private EducationRepository educationRepository;
+
 
     // 이력서 저장
     @Transactional
@@ -77,6 +89,26 @@ public class ResumeService {
                     .collect(Collectors.toList());
             resume.setProjects(projects);
 
+            List<Activity> activities = resumeDTO.getActivities().stream()
+                    .map(activityDTO -> new Activity(activityDTO.getId(), activityDTO.getActivityName(), activityDTO.getOrganizationName(), activityDTO.getStartDate(), activityDTO.getEndDate(), activityDTO.getIsCurrent(), resume))
+                    .collect(Collectors.toList());
+            resume.setActivities(activities);
+
+            List<Training> trainings = resumeDTO.getTrainings().stream()
+                    .map(trainingDTO -> new Training(trainingDTO.getId(), trainingDTO.getCourseName(), trainingDTO.getInstitution(), trainingDTO.getStartDate(), trainingDTO.getEndDate(), trainingDTO.getIsCurrent(), resume))
+                    .collect(Collectors.toList());
+            resume.setTrainings(trainings);
+
+            List<AboutMe> aboutMes = resumeDTO.getAboutMes().stream()
+                    .map(aboutMeDTO -> new AboutMe(aboutMeDTO.getId(), aboutMeDTO.getPhoto(), aboutMeDTO.getName(), aboutMeDTO.getBirthday(), aboutMeDTO.getEmail(), aboutMeDTO.getPhoneNumber(), aboutMeDTO.getGithub(),aboutMeDTO.getBlog(), aboutMeDTO.getIntroduction(), resume))
+                    .collect(Collectors.toList());
+            resume.setAboutMes(aboutMes);
+
+            List<Education> educations = resumeDTO.getEducations().stream()
+                    .map(educationDTO -> new Education(educationDTO.getId(), educationDTO.getSchoolName(), educationDTO.getMajor(), educationDTO.getStartDate(), educationDTO.getEndDate(), educationDTO.getStatus(), educationDTO.getEducationType(), resume))
+                    .collect(Collectors.toList());
+            resume.setEducations(educations);
+
             resumeRepository.save(resume);
         }
     }
@@ -111,7 +143,23 @@ public class ResumeService {
                     .map(project -> new ProjectDTO(project.getId(), project.getTitle(), project.getStartDate(), project.getEndDate(), project.getIsCurrent(), project.getIntro(), project.getTechStack(), project.getDescription()))
                     .collect(Collectors.toList());
 
-            return new ResumeDTO(resume.getId(), resume.getTitle(), resume.getCreatedAt(), languageDTOs, awardDTOs, certificateDTOs, skillDTOs, careerDTOs, projectDTOs);
+            List<ActivityDTO> activityDTOS = resume.getActivities().stream()
+                    .map(activity -> new ActivityDTO(activity.getId(), activity.getActivityName(), activity.getOrganizationName(), activity.getStartDate(), activity.getEndDate(), activity.getIsCurrent()))
+                    .collect(Collectors.toList());
+
+            List<TrainingDTO> trainingDTOS = resume.getTrainings().stream()
+                    .map(training -> new TrainingDTO(training.getId(), training.getCourseName(), training.getInstitution(), training.getStartDate(), training.getEndDate(), training.getIsCurrent()))
+                    .collect(Collectors.toList());
+
+            List<AboutMeDTO> aboutMeDTOS = resume.getAboutMes().stream()
+                    .map(aboutMe -> new AboutMeDTO(aboutMe.getId(), aboutMe.getPhoto(), aboutMe.getName(), aboutMe.getBirthday(), aboutMe.getEmail(), aboutMe.getPhoneNumber(), aboutMe.getBlog(), aboutMe.getGithub(), aboutMe.getIntroduction()))
+                    .collect(Collectors.toList());
+
+            List<EducationDTO> educationDTOS = resume.getEducations().stream()
+                    .map(education -> new EducationDTO(education.getId(), education.getSchoolName(), education.getMajor(), education.getStartDate(), education.getEndDate(), education.getStatus(), education.getEducationType()))
+                    .collect(Collectors.toList());
+
+            return new ResumeDTO(resume.getId(), resume.getTitle(), resume.getCreatedAt(), languageDTOs, awardDTOs, certificateDTOs, skillDTOs, careerDTOs, projectDTOs, activityDTOS, trainingDTOS, aboutMeDTOS, educationDTOS);
         }
         return null;
     }
@@ -154,13 +202,33 @@ public class ResumeService {
                 .map(project -> new ProjectDTO(project.getId(), project.getTitle(), project.getStartDate(), project.getEndDate(), project.getIsCurrent(), project.getIntro(), project.getTechStack(), project.getDescription()))
                 .collect(Collectors.toList());
 
-        return new ResumeDTO(resume.getId(), resume.getTitle(), resume.getCreatedAt(), languages, awards, certificates, skills, careers, projects);
+        List<ActivityDTO> activities = activityRepository.findByResumeId(resume.getId())
+                .stream()
+                .map(activity -> new ActivityDTO(activity.getId(), activity.getActivityName(), activity.getOrganizationName(), activity.getStartDate(), activity.getEndDate(), activity.getIsCurrent()))
+                .collect(Collectors.toList());
+
+        List<TrainingDTO> trainings = trainingRepository.findByResumeId(resume.getId())
+                .stream()
+                .map(training -> new TrainingDTO(training.getId(), training.getCourseName(), training.getInstitution(), training.getStartDate(), training.getEndDate(), training.getIsCurrent()))
+                .collect(Collectors.toList());
+
+        List<AboutMeDTO> aboutMes = aboutMeRepository.findByResumeId(resume.getId())
+                .stream()
+                .map(aboutMe -> new AboutMeDTO(aboutMe.getId(), aboutMe.getPhoto(), aboutMe.getName(), aboutMe.getBirthday(), aboutMe.getEmail(), aboutMe.getPhoneNumber(), aboutMe.getBlog(), aboutMe.getGithub(), aboutMe.getIntroduction()))
+                .collect(Collectors.toList());
+
+        List<EducationDTO> educations = educationRepository.findByResumeId(resume.getId())
+                .stream()
+                .map(education -> new EducationDTO(education.getId(), education.getSchoolName(), education.getMajor(), education.getStartDate(), education.getEndDate(), education.getStatus(), education.getEducationType()))
+                .collect(Collectors.toList());
+
+        return new ResumeDTO(resume.getId(), resume.getTitle(), resume.getCreatedAt(), languages, awards, certificates, skills, careers, projects, activities, trainings, aboutMes, educations);
     }
 
     // 특정 사용자의 모든 이력서 조회
     public List<ResumeDTO> getAllResumesByUser(String userId) {
         List<Resume> resumes = resumeRepository.findByUserId(userId);
-        return resumes.stream().map(resume -> new ResumeDTO(resume.getId(), resume.getTitle(), resume.getCreatedAt(), null, null, null, null, null, null)).collect(Collectors.toList());
+        return resumes.stream().map(resume -> new ResumeDTO(resume.getId(), resume.getTitle(), resume.getCreatedAt(), null, null, null, null, null, null, null, null, null, null)).collect(Collectors.toList());
     }
 
     // 새로운 이력서 생성
@@ -194,7 +262,7 @@ public class ResumeService {
             Resume resume = optionalResume.get();
             resume.setTitle(newTitle);
             resumeRepository.save(resume);
-            return new ResumeDTO(resume.getId(), resume.getTitle(), resume.getCreatedAt(), null, null, null, null, null, null);
+            return new ResumeDTO(resume.getId(), resume.getTitle(), resume.getCreatedAt(), null, null, null, null, null, null, null, null, null, null);
         }
         return null;
     }

@@ -9,5 +9,6 @@ import java.util.Optional;
 public interface TrainingRepository extends JpaRepository<Training, Integer> {
 
     List<Training> findByResumeId(Integer resumeId);
-    Optional<Training> findByIdAndResumeId(Integer id, Integer resumeId);
+
+    Optional<Training> findByIdAndResumeId(Integer trainingId, Integer resumeId);
 }
