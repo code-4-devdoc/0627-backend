@@ -52,7 +52,7 @@ public class KogptController {
             // PromptRequest에서 받은 값으로 요청 데이터 설정
             payload.put("prompt", request.getPrompt());
             payload.put("max_tokens", request.getMaxTokens() != null ? request.getMaxTokens() : 50);
-            payload.put("temperature", request.getTemperature() != null ? request.getTemperature() : 0.3);
+            payload.put("temperature", request.getTemperature() != null ? request.getTemperature() : 0.1);
 
             // HttpEntity 객체에 헤더와 페이로드 저장
             HttpEntity<Map<String, Object>> entity = new HttpEntity<>(payload, headers);
