@@ -1,10 +1,9 @@
 package com.devdoc.backend.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @Data
 @Entity
@@ -18,8 +17,9 @@ public class AboutMe {
 
     private String photo;
     private String name; //not null
-    private String jobTitle;
+    private String birthday;
     private String email;
+    private String github;
     private String phoneNumber;
     private String blog;
     private String introduction;

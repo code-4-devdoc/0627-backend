@@ -1,10 +1,9 @@
 package com.devdoc.backend.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
 
 @Data
 @Entity
@@ -18,8 +17,10 @@ public class Education {
 
     private String schoolName; //not null
     private String major;
-    private String enrollmentPeriod;
+    private String startDate;
+    private String endDate;
     private String status;
+    private String educationType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resume_id")

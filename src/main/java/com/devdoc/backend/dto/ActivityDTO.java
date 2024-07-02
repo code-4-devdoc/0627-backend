@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ActivityDTO {
-
-    private int id;
+    private Integer id;
     private String activityName;
     private String organizationName;
     private String startDate;
     private String endDate;
+    private Boolean isCurrent;
 }

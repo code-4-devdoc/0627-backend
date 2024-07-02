@@ -20,4 +20,8 @@ public class ResumeDTO {
     private List<SkillDTO> skills;
     private List<CareerDTO> careers;
     private List<ProjectDTO> projects;
+    private List<ActivityDTO> activities;
+    private List<TrainingDTO> trainings;
+    private List<AboutMeDTO> aboutMes;
+    private List<EducationDTO> educations;
 }
